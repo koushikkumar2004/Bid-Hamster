@@ -52,19 +52,19 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #3B82F6, #7C3AED)' }}>
-              <Zap size={24} color="white" />
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden border border-blue-400/20"
+              style={{ background: 'linear-gradient(135deg, #3B82F610, #7C3AED10)' }}>
+              <img src="/logo.png" alt="Bid Hamster" className="w-full h-full object-cover" />
             </div>
-            <span className="text-3xl font-bold font-poppins">
-              <span style={{ color: '#E2E8F0' }}>Bid</span><span style={{ color: '#3B82F6' }}>Nexus</span>
+            <span className="text-3xl font-bold font-poppins text-white">
+              Bid <span style={{ color: '#3B82F6' }}>Hamster</span>
             </span>
           </Link>
           <p className="text-slate-400 mt-2 text-sm">Create your account</p>
         </div>
 
         <div className="glass rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-white mb-6">Join BidNexus</h1>
+          <h1 className="text-2xl font-bold text-white mb-6">Join Bid Hamster</h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name */}
