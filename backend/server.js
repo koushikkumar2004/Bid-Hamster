@@ -26,8 +26,13 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
-      const allowed = (process.env.CLIENT_URL || 'http://localhost:3000').split(',');
-      if (!origin || allowed.includes(origin)) {
+      const allowed = (process.env.CLIENT_URL || 'http://localhost:3000')
+        .split(',')
+        .map(o => o.replace(/\/$/, ''));
+      
+      const normalizedOrigin = origin ? origin.replace(/\/$/, '') : null;
+      
+      if (!origin || allowed.includes(normalizedOrigin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
@@ -56,12 +61,19 @@ app.use(helmet({
 }));
 
 // Robust CORS for production
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000').split(',');
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000')
+  .split(',')
+  .map(o => o.replace(/\/$/, '')); // Trim trailing slashes
+
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Trim trailing slash from incoming origin for comparison
+    const normalizedOrigin = origin ? origin.replace(/\/$/, '') : null;
+    
+    if (!origin || allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
+      console.log('❌ CORS Blocked Origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
