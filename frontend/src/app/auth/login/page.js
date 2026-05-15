@@ -25,12 +25,7 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err) {
       const msg = err.response?.data?.message || 'Login failed';
-      if (err.response?.status === 403 && err.response?.data?.userId) {
-        toast.error('Please verify your email first.');
-        router.push(`/auth/verify-email?userId=${err.response.data.userId}`);
-      } else {
-        toast.error(msg);
-      }
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

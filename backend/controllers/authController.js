@@ -29,7 +29,6 @@ exports.register = async (req, res) => {
       return res.status(400).json({ success: false, message: 'An account with this email already exists.' });
     }
 
-    const otp = generateOTP();
     const user = await User.create({
       name,
       email,
@@ -37,17 +36,16 @@ exports.register = async (req, res) => {
       age,
       gender,
       phone: phone || '',
-      verificationCode: otp,
-      verificationCodeExpire: new Date(Date.now() + 10 * 60 * 1000),
+      isVerified: true,
     });
 
-    // Send email in background
-    sendOTPEmail(email, name, otp).catch(err => console.error('📧 Background Email Error (Register):', err));
+    const token = signToken(user._id);
 
     res.status(201).json({
       success: true,
-      message: 'Registration successful! Please check your email for the OTP.',
-      userId: user._id,
+      message: 'Registration successful!',
+      token,
+      user: { _id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -120,9 +118,7 @@ exports.login = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
-    if (!user.isVerified) {
-      return res.status(403).json({ success: false, message: 'Please verify your email first.', userId: user._id });
-    }
+    /* Skip verification check for faster login */
     if (user.isBanned) {
       return res.status(403).json({ success: false, message: 'Your account has been banned.' });
     }

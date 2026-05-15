@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Zap } from 'lucide-react';
 import { authAPI } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 
 const GENDER_OPTIONS = ['Male', 'Female', 'Other', 'Prefer not to say'];
 
@@ -14,6 +15,7 @@ export default function RegisterPage() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { login } = useAuth();
   const router = useRouter();
   const password = watch('password');
 
@@ -21,8 +23,9 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const res = await authAPI.register(data);
-      toast.success('Account created! Check your email for the OTP.');
-      router.push(`/auth/verify-email?userId=${res.data.userId}`);
+      login(res.data.user, res.data.token);
+      toast.success('Welcome to Bid Hamster! 🎉');
+      router.push('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
     } finally {
