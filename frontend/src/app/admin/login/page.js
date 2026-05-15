@@ -42,12 +42,17 @@ export default function AdminLoginPage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md mx-4">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'linear-gradient(135deg, #7C3AED, #3B82F6)' }}>
-            <Shield size={32} color="white" />
-          </div>
-          <h1 className="text-3xl font-bold text-white font-poppins">Admin Portal</h1>
-          <p className="text-slate-400 mt-2 text-sm">Restricted access. Authorized personnel only.</p>
+          <Link href="/" className="inline-flex items-center gap-3 mb-4">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden border border-purple-500/20"
+              style={{ background: 'linear-gradient(135deg, #7C3AED10, #3B82F610)' }}>
+              <img src="/logo.png" alt="Bid Hamster" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-3xl font-bold font-poppins text-white">
+              Bid <span style={{ color: '#7C3AED' }}>Hamster</span>
+            </span>
+          </Link>
+          <h1 className="text-2xl font-bold text-white font-poppins">Admin Portal</h1>
+          <p className="text-slate-400 mt-2 text-sm">Authorized Personnel Only</p>
         </div>
 
         <div className="rounded-2xl p-8" style={{ background: '#111827', border: '1px solid rgba(124,58,237,0.4)' }}>
