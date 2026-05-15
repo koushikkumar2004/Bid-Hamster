@@ -135,10 +135,12 @@ export default function LoginPage() {
             </motion.button>
           </form>
 
-          <p className="text-center text-slate-400 text-sm mt-6">
+          <div className="text-center text-slate-400 text-sm mt-8 pt-6 border-t border-slate-800">
             Don't have an account?{' '}
-            <Link href="/auth/register" className="text-blue-400 hover:text-blue-300 font-medium">Create Account</Link>
-          </p>
+            <Link href="/auth/register" className="text-blue-400 hover:text-blue-300 font-bold ml-1 px-2 py-1 transition-all underline decoration-blue-500/30 underline-offset-4">
+              Create Free Account
+            </Link>
+          </div>
         </div>
 
         {/* Admin link */}
