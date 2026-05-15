@@ -41,7 +41,8 @@ exports.register = async (req, res) => {
       verificationCodeExpire: new Date(Date.now() + 10 * 60 * 1000),
     });
 
-    await sendOTPEmail(email, name, otp);
+    // Send email in background
+    sendOTPEmail(email, name, otp).catch(err => console.error('📧 Background Email Error (Register):', err));
 
     res.status(201).json({
       success: true,
@@ -99,7 +100,8 @@ exports.resendOTP = async (req, res) => {
     user.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    await sendOTPEmail(user.email, user.name, otp);
+    // Send email in background
+    sendOTPEmail(user.email, user.name, otp).catch(err => console.error('📧 Background Email Error (Resend):', err));
     res.json({ success: true, message: 'New OTP sent to your email.' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -171,7 +173,8 @@ exports.forgotPassword = async (req, res) => {
     user.passwordResetExpire = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    await sendPasswordResetEmail(email, { name: user.name, otp });
+    // Send email in background
+    sendPasswordResetEmail(email, { name: user.name, otp }).catch(err => console.error('📧 Background Email Error (ForgotPass):', err));
     res.json({ success: true, message: 'Password reset OTP sent to your email.', userId: user._id });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
