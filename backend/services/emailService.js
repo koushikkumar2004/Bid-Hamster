@@ -8,6 +8,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Verify connection configuration
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log('❌ Email Transporter Error:', error);
+  } else {
+    console.log('✅ Email Server is ready to take our messages');
+  }
+});
+
+const getBaseUrl = () => {
+  const url = process.env.CLIENT_URL || 'http://localhost:3000';
+  return url.split(',')[0].replace(/\/$/, '');
+};
+
 // ─── Email Templates ───────────────────────────────────────────────────────────
 
 const baseTemplate = (content) => `
@@ -45,7 +59,7 @@ const baseTemplate = (content) => `
     <div class="card">
       <div class="header">
         <div style="display:inline-flex;align-items:center;gap:12px;">
-          <img src="${process.env.CLIENT_URL}/logo.png" width="40" height="40" style="border-radius:8px;" alt="" />
+          <img src="${getBaseUrl()}/logo.png" width="40" height="40" style="border-radius:8px;" alt="" />
           <div class="logo">Bid<span>Hamster</span></div>
         </div>
         <p style="color:#94A3B8;margin:8px 0 0;font-size:13px;">Real-Time Auction Platform</p>
@@ -248,7 +262,7 @@ const sendNewAuctionEmail = async (email, { name, auctionTitle, basePrice, start
     </div>
     <p>The timer is ticking down fast. Don't miss out on this item!</p>
     <div style="text-align:center;margin:24px 0;">
-      <a href="${process.env.CLIENT_URL}/dashboard/auctions/${auctionId}" class="btn">View Live Auction →</a>
+      <a href="${getBaseUrl()}/dashboard/auctions/${auctionId}" class="btn">Place Higher Bid →</a>
     </div>
   `;
 
