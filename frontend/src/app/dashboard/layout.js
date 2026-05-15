@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     if (!loading && !user) router.push('/auth/login');
-    if (!loading && user?.role === 'admin') router.push('/admin');
+    // Allow admins to stay on user dashboard if they wish to view it
     if (!loading && user) fetchNotifications();
   }, [user, loading]);
 
@@ -96,18 +96,20 @@ export default function DashboardLayout({ children }) {
     try {
       const { data } = await walletAPI.deposit({ amount: Number(depositAmount), currency: user.currency || 'INR', paymentMethod });
       const { transactionId } = data;
-      setTimeout(async () => {
-        try {
-          const verifyRes = await walletAPI.verify({ transactionId, status: 'Success' });
-          if (verifyRes.data.success) {
-            toast.success(`Successfully added ${formatCurrency(depositAmount, user.currency)} to wallet!`);
-            updateUser(verifyRes.data.user);
-            setDepositModalOpen(false);
-            setDepositAmount('');
-          }
-        } catch (err) { toast.error(err.response?.data?.message || 'Payment verification failed'); }
-        finally { setProcessingPayment(false); }
-      }, 2000);
+      // Process immediately (removed artificial 2s delay)
+      try {
+        const verifyRes = await walletAPI.verify({ transactionId, status: 'Success' });
+        if (verifyRes.data.success) {
+          toast.success('The amount was successfully added! ✅');
+          updateUser(verifyRes.data.user);
+          setDepositModalOpen(false);
+          setDepositAmount('');
+        }
+      } catch (err) { 
+        toast.error(err.response?.data?.message || 'Payment verification failed'); 
+      } finally { 
+        setProcessingPayment(false); 
+      }
     } catch (err) {
       setProcessingPayment(false);
       toast.error(err.response?.data?.message || 'Failed to initiate deposit');

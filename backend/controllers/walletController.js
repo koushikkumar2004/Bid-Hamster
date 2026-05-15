@@ -46,9 +46,9 @@ exports.verifyPayment = async (req, res) => {
       user.walletBalance += transaction.amount;
       await user.save();
 
-      // Send email
+      // Send email in background
       if (sendDepositSuccessEmail) {
-        await sendDepositSuccessEmail(user.email, {
+        sendDepositSuccessEmail(user.email, {
           name: user.name,
           amount: transaction.amount,
           currency: transaction.currency,
@@ -57,7 +57,7 @@ exports.verifyPayment = async (req, res) => {
           date: new Date(),
           newBalanceBase: user.walletBalance,
           userCurrency: user.currency,
-        }).catch(console.error);
+        }).catch(err => console.error('📧 Background Email Error (Deposit):', err));
       }
       
       return res.json({ success: true, message: 'Payment processed', transaction, user });
