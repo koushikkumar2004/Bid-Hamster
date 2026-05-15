@@ -32,7 +32,7 @@ const generateInvoicePDF = (invoiceData) => {
 
     // ─── Header ──────────────────────────────────────────────
     doc.rect(0, 0, doc.page.width, 120).fill(darkBg);
-    doc.fontSize(32).fillColor(primaryColor).font('Helvetica-Bold').text('BidNexus', 50, 35);
+    doc.fontSize(32).fillColor(primaryColor).font('Helvetica-Bold').text('Bid Hamster', 50, 35);
     doc.fontSize(12).fillColor('#94A3B8').font('Helvetica').text('Real-Time Auction Platform', 50, 75);
     doc.fontSize(12).fillColor('#94A3B8').text('INVOICE', { align: 'right' }).moveUp();
     doc.fillColor('#FFFFFF').fontSize(14).text(`#${invoiceId}`, { align: 'right' });
@@ -69,30 +69,30 @@ const generateInvoicePDF = (invoiceData) => {
     doc.fontSize(11).fillColor('#E2E8F0').font('Helvetica');
     doc.text(auctionTitle, 70, 370, { width: 220 });
     doc.text(category, 300, 370);
-    doc.fillColor('#10B981').text(`$${bidAmount.toFixed(2)}`, 460, 370);
+    doc.fillColor('#10B981').text(`₹${bidAmount.toFixed(2)}`, 460, 370);
 
     // ─── Totals ───────────────────────────────────────────────
     let y = 430;
     doc.rect(50, y, 495, 1).fill('#1E3A5F');
     y += 16;
     doc.fontSize(11).fillColor('#94A3B8').font('Helvetica').text('Bid Amount:', 350, y);
-    doc.fillColor('#FFFFFF').text(`$${bidAmount.toFixed(2)}`, 480, y, { align: 'right' });
+    doc.fillColor('#FFFFFF').text(`₹${bidAmount.toFixed(2)}`, 480, y, { align: 'right' });
     y += 22;
     doc.fillColor('#94A3B8').text('Platform Fee (5%):', 350, y);
-    doc.fillColor('#F59E0B').text(`$${platformFee.toFixed(2)}`, 480, y, { align: 'right' });
+    doc.fillColor('#F59E0B').text(`₹${platformFee.toFixed(2)}`, 480, y, { align: 'right' });
     y += 16;
     doc.rect(50, y, 495, 1).fill('#1E3A5F');
     y += 16;
     doc.fontSize(14).fillColor('#FFFFFF').font('Helvetica-Bold').text('TOTAL DUE:', 350, y);
-    doc.fillColor(primaryColor).text(`$${totalAmount.toFixed(2)}`, 480, y, { align: 'right' });
+    doc.fillColor(primaryColor).text(`₹${totalAmount.toFixed(2)}`, 480, y, { align: 'right' });
 
     // ─── Footer ───────────────────────────────────────────────
     const footerY = doc.page.height - 80;
     doc.rect(0, footerY, doc.page.width, 80).fill(darkBg);
     doc.fontSize(10).fillColor('#475569').font('Helvetica')
-      .text('Thank you for using BidNexus. This is a computer-generated invoice.',
+      .text('Thank you for using Bid Hamster. This is a computer-generated invoice.',
         50, footerY + 20, { align: 'center', width: doc.page.width - 100 });
-    doc.text('© ' + new Date().getFullYear() + ' BidNexus — All rights reserved.',
+    doc.text('© ' + new Date().getFullYear() + ' Bid Hamster — All rights reserved.',
       50, footerY + 40, { align: 'center', width: doc.page.width - 100 });
 
     doc.end();
